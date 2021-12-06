@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const CollectionsSchema = new Schema({
+const EventsSchema = new Schema({
   title: { type: String, required: true },
   imageUrlSet: [{ type: String }],
   description: { type: String },
 });
 
-const Collections = mongoose.model("collections", CollectionsSchema);
+const Events = mongoose.model("Events", EventsSchema);
 
 module.exports = {
-    Collections,
+    Events,
   };
   

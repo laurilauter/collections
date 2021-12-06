@@ -16,7 +16,7 @@
         <div
           class="col col-xs-12 col-sm-12 col-md-12 col-lg-6 p-5 justify-content-center"
         >
-          <h1 class="mb-3">Testing Collections</h1>
+          <h1 class="mb-3">Events</h1>
         </div>
         <div class="text-center col-lg-3 col-md-12 col-sm-12 float-right">
           <!-- MODAL START -->
@@ -25,7 +25,7 @@
             @click="openModal"
             v-if="!showModal && token"
           >
-            Add Landmark
+            Add Event
           </button>
           <AddLandmark
             v-if="showModal"
@@ -151,9 +151,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .mb-3 {
-  font-size: 50px;
-  color: peachpuff;
-  text-shadow: 2px 2px 5px black;
+  font-size: 10em;
+  color: grey;
   text-align: center;
 }
 
@@ -194,7 +193,7 @@ button {
   height: 50px;
   width: fit-content;
   margin: 0.5em;
-  background: linear-gradient(to right, #16c0b0, #84cf6a);
+  background: indianred;
   border: none;
   border-radius: 0.5em;
   font-weight: 600;
