@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const LandmarksSchema = new Schema({
+const CollectionsSchema = new Schema({
   title: { type: String, required: true },
   imageUrlSet: [{ type: String }],
   description: { type: String },
 });
 
-const Landmarks = mongoose.model("landmarks", LandmarksSchema);
+const Collections = mongoose.model("collections", CollectionsSchema);
 
 module.exports = {
-    Landmarks,
+    Collections,
   };
   

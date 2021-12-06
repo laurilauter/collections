@@ -35,11 +35,11 @@ app.use("/api", routes);
 
 //Respond if GET request is made to root URL
 app.get("/", (req, res) => {
-  res.send("Hello from Landmarks backend!");
+  res.send("Hello from Collections backend!");
 });
 
 // enable env port
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
-  console.log(`Landmarks backend listening on port: ${PORT}`)
+  console.log(`Collections backend listening on port: ${PORT}`)
 );

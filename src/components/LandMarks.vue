@@ -16,7 +16,7 @@
         <div
           class="col col-xs-12 col-sm-12 col-md-12 col-lg-6 p-5 justify-content-center"
         >
-          <h1 class="mb-3">World landmarks</h1>
+          <h1 class="mb-3">Testing Collections</h1>
         </div>
         <div class="text-center col-lg-3 col-md-12 col-sm-12 float-right">
           <!-- MODAL START -->
@@ -160,12 +160,12 @@ export default {
 .box {
   margin: 1em 0;
   text-align: center;
-  border: 1px solid silver;
+  border: 1px solid #BFBFBF;
   border-radius: 0.5em;
   width: fit-content;
   padding: 0px;
-  box-shadow: 5px 10px 8px silver;
-  background: lightgrey;
+  box-shadow: 10px 10px 5px #aaaaaa;
+  background-color: white;
 }
 
 .box img {
@@ -186,7 +186,6 @@ a {
   text-decoration: none;
 }
 .banner {
-  background-image: url("https://i.pinimg.com/originals/61/70/db/6170db50b79ace81d424d37b66c6a9a7.jpg");
   min-height: fit-content;
   width: 100vw;
 }

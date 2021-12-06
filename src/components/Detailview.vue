@@ -164,12 +164,13 @@ export default {
 
 <style scoped>
 .image-text-box {
-  border: 1px solid rgb(192, 192, 192);
+  border: 1px solid grey;
   border-radius: 0.5em;
   width: fit-content;
   max-width: 80vw;
   padding: 0px;
   box-shadow: 3px 5px 5px rgb(26, 46, 65);
+  background-color: white;
 }
 
 .btn-row {
@@ -188,11 +189,11 @@ export default {
 }
 
 h1 {
-  color: azure;
+  color: grey;
 }
 
 h4 {
-  color: #ffffff;
+  color: grey;
   text-align: center;
   padding-right: 15px;
   padding-left: 15px;

@@ -1,14 +1,14 @@
 <template>
   <footer id="footer" class="container-fluid">
     <div class="container my-3 text-center">
-      <span>Mikk Ereline</span>&nbsp;&nbsp;
-      <span>Ekaterina Chigasova</span>&nbsp;&nbsp;
+      <span>This is a Footer</span>&nbsp;&nbsp;
+<!--       <span>Ekaterina Chigasova</span>&nbsp;&nbsp;
       <span>Edgar Kollamaa</span>&nbsp;&nbsp;
       <span>Lauri Lauter</span>&nbsp;&nbsp;
-      <span>Taavet Lehiste</span>&nbsp;&nbsp;
+      <span>Taavet Lehiste</span>&nbsp;&nbsp; -->
     </div>
     <div class="row text-center">
-      <a
+      <!-- <a
         class="social-icon"
         href="https://github.com/laurilautervikk/landmarks"
         target="_blank"
@@ -27,7 +27,7 @@
           />
         </svg>
       </a>
-
+ -->
       <p>Copyright &copy; 2021</p>
     </div>
   </footer>
