@@ -1,5 +1,6 @@
 <template>
   <div class="layout">
+    <Navbar />
     <header class="container-fluid banner">
       <div
         class="row d-flex justify-content-between align-items-center header-row"
@@ -72,12 +73,14 @@ import { ref } from "vue";
 import axios from "axios";
 import AddLandmark from "@/components/AddLandmark.vue";
 import Footer from "@/components/Footer.vue";
+import Navbar from "@/components/Navbar.vue";
 
 export default {
   name: "Landmarks",
   components: {
     AddLandmark,
     Footer,
+    Navbar,
   },
   props: {
     title: String,
