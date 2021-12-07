@@ -86,6 +86,7 @@ export default {
     title: String,
     imageUrl: String,
     description: String,
+    authok: Boolean,  //Failed prop to child
   },
 
   data() {

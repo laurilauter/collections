@@ -7,6 +7,8 @@ import Login from "@/views/Login.vue";
 import Detailview from "@/components/Detailview.vue";
 import EditLandmark from "@/components/EditLandmark.vue";
 import PageNotFound from "@/views/PageNotFound.vue";
+//const jwt = require('jsonwebtoken');
+//const { SECRET } = require("../../server/config.js");
 
 const routes = [
   {
@@ -76,7 +78,28 @@ const router = createRouter({
   routes,
 });
 
-// GOOD
+
+// GOOD INFINITE LOOP
+/* router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem("token");
+  //check token
+  jwt.verify(token, SECRET, (err, decoded) => {
+      if (err) {
+          localStorage.clear();
+          next({ route: "/login" });
+          console.log('Token was old and had to be deleted', decoded);
+      } else {
+        next();
+      }
+      console.log("Login logic passed");
+});
+}); */
+
+
+
+
+
+// GOOD, but will not check EXPIRATION
 router.beforeEach((to, from, next) => {
   if (to.meta.auth === true && !localStorage.getItem("token"))
     next({ route: "/" });
@@ -84,6 +107,9 @@ router.beforeEach((to, from, next) => {
   else next();
   console.log("Login logic passed");
 });
+
+
+
 
 //this gives a warning of double next() in some cases
 /* router.beforeEach((to, from, next) => {

@@ -5,8 +5,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarTogglerDemo02">
-      
-      <ul class="navbar-nav mb-2 mb-lg-0">
+      <ul class="navbar-nav mb-2 me-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link" @click="$router.push('/login')" v-if="!token">Login</a>
         </li>
@@ -24,7 +23,7 @@
 <script>
     export default {
   props: {
-      token: String,
+      /* token: String, */
   },
 
 }

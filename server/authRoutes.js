@@ -32,7 +32,7 @@ router.post("/login", async function (request, response) {
         });
         response.send({ token: "Bearer " + token });
       } else {
-        throw "Not valid";
+        throw "Wrong password";
       }
     } else {
       throw "User does not exist";
