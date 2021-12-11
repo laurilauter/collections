@@ -5,29 +5,45 @@
       <div
         class="row d-flex justify-content-between align-items-center header-row"
       >
-        <div class="col-sm-12 col col-md-12 col-lg-3 float-left">
+        <div class="col-sm-12 col col-md-12 col-lg-3 float-left d-flex justify-content-start">
           <div class="row m-3 justify-content-end">
-            <button @click="$router.push('/login')" v-if="!token">Login</button>
-            <button @click="$router.push('/register')" v-if="!token">
+            <div
+              class="btn-square btn-long m-1 mt-1 mb-3 d-inline-flex align-items-center fs-5 justify-content-center"
+              @click="$router.push('/login')"
+              v-if="!token"
+            >
+              Login
+            </div>
+            <div
+              class="btn-square btn-long m-1 mt-1 mb-3 d-inline-flex align-items-center fs-5 justify-content-center"
+              @click="$router.push('/register')"
+              v-if="!token"
+            >
               Register
-            </button>
-            <button @click="logout" v-if="token">Logout</button>
+            </div>
+            <div
+              class="btn-square btn-long m-1 mt-1 mb-3 d-inline-flex align-items-center fs-5 justify-content-center"
+              @click="logout"
+              v-if="token"
+            >
+              Logout
+            </div>
           </div>
         </div>
         <div
-          class="col col-xs-12 col-sm-12 col-md-12 col-lg-6 p-5 justify-content-center"
+          class="col col-xs-12 col-sm-12 col-md-12 col-lg-6 p-5 d-flex justify-content-center"
         >
-          <h1 class="mb-3">Events</h1>
+          <h1 class="header">Events</h1>
         </div>
         <div class="text-center col-lg-3 col-md-12 col-sm-12 float-right">
           <!-- MODAL START -->
-          <button
-            class="align-middle btn btn-info m-1"
+          <div
+            class="btn-square m-1 mt-1 mb-3 d-inline-flex align-items-center"
             @click="openModal"
             v-if="!showModal && token"
           >
-            Add Event
-          </button>
+            <i class="plus fs-2 bi bi-plus text-dark"></i>
+          </div>
           <AddLandmark
             v-if="showModal"
             :showModal="showModal"
@@ -74,7 +90,6 @@ import axios from "axios";
 import AddLandmark from "@/components/AddLandmark.vue";
 import Footer from "@/components/Footer.vue";
 import Navbar from "@/components/Navbar.vue";
-
 export default {
   name: "Landmarks",
   components: {
@@ -86,7 +101,6 @@ export default {
     title: String,
     imageUrl: String,
     description: String,
-    authok: Boolean,  //Failed prop to child
   },
 
   data() {
@@ -97,7 +111,6 @@ export default {
     let showModal = ref(false);
     let token = ref(localStorage.getItem("token"));
     console.log("token: ", token);
-
 
     //GET request for a list of landmarks
     async function getLandmarks() {
@@ -131,7 +144,7 @@ export default {
     const logout = () => {
       localStorage.clear(); //WORKS
       //localStorage.removeItem("token");
-      console.log('token removed');
+      console.log("token removed");
       getLandmarks();
       location.reload();
       //this.$router.push('../views/login'); //NOT WORKING
@@ -152,30 +165,29 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.mb-3 {
-  font-size: 10em;
-  color: grey;
-  text-align: center;
-}
 
 .box {
   margin: 1em 0;
   text-align: center;
-  border: 1px solid #BFBFBF;
-  border-radius: 0.5em;
+  border: 1px solid silver;
+  border-radius: 0.25em;
   width: fit-content;
   padding: 0px;
-  box-shadow: 10px 10px 5px #aaaaaa;
-  background-color: white;
+  box-shadow: 5px 10px 8px silver;
+  background: lightgrey;
 }
 
 .box img {
   width: 300px;
   height: 250px;
   object-fit: cover;
-  border-radius: 0.5em 0.5em 0 0;
+  border-radius: 0.25em 0.25em 0 0;
+}
+
+.header {
+  font-size: 5em;
+  color: #454545;
 }
 
 .title {
@@ -193,14 +205,24 @@ a {
   width: 100vw;
 }
 
-button {
-  height: 50px;
-  width: fit-content;
-  margin: 0.5em;
-  background: indianred;
+
+.btn-square {
+  min-height: 50px !important;
+  min-width: 50px !important;
+  background: hotpink;
   border: none;
-  border-radius: 0.5em;
-  font-weight: 600;
+  position: relative;
+  cursor: pointer;
+
+}
+
+.btn-long {
+  width: 100px;
+}
+.btn-square i {
+  position: absolute;
+  -ms-transform: translate(-10%, -10%);
+  transform: translate(10px, -10%);
 }
 
 .layout {

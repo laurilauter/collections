@@ -21,8 +21,8 @@ body {
   width: 100vw;
 }
 
-div {
+/* div {
   border: 1px solid red;
-}
+} */
 
 </style>

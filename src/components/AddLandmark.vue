@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-between">
           <h3 class="px-5 pt-3 mb-0 align-bottom">Add a new landmark</h3>
           <div @click="closeModal" class="align-top">
-            <i class="align-top fs-2 bi bi-x-circle"></i>
+            <i class="align-top fs-2 bi bi-x"></i>
           </div>
         </div>
 
@@ -41,14 +41,14 @@
           <div class="container">
             <div id="thumb-row" class="row d-flex flex-wrap">
               <div
-                class="image-box col-3"
+                class="image-box col-6 col-md-4 col-lg-3 justify-content-center"
                 v-for="(image, index) in newImageUrlSet"
                 :key="image"
               >
                 <img
-                  class="tiny-image img-thumbnail"
+                  class="tiny-image img-thumbnail" width="100" height="100"
                   :src="image"
-                  alt="missing image"
+                  alt="this image is missing"
                 />
                 <div
                   @click="deleteThumbnail(index)"
@@ -178,13 +178,17 @@ export default {
 }
 
 .homemade-button {
-  height: 50px;
-  width: fit-content;
-  margin-top: auto;
-  background: linear-gradient(to right, #16c0b0, #84cf6a);
+  min-height: 50px !important;
+  min-width: 50px !important;
+  background: hotpink;
   border: none;
-  border-radius: 0.5em;
-  font-weight: 600;
+  position: relative;
+}
+
+.btn-square i {
+  position: absolute;
+  -ms-transform: translate(-10%, -10%);
+  transform: translate(10px, -10%);
 }
 
 .form-control {
@@ -192,18 +196,19 @@ export default {
   margin-bottom: 0.5em;
 }
 
+
 button {
   margin-top: 0em;
   margin-bottom: 0em;
 }
 
-.btn-height {
+/* .btn-height {
   margin-top: 8px;
   height: 38px;
   border: 0px;
   background: linear-gradient(to right, #16c0b0, #84cf6a);
 }
-
+ */
 .tiny-image {
   width: 100px;
   height: 100px;
@@ -219,7 +224,7 @@ button {
 .plus {
   margin: 0;
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
@@ -240,7 +245,7 @@ div.image-box div {
   display: none;
 }
 div.image-box div.delete {
-  top: 15px;
-  right: 20px;
+  top: 35px;
+  right: 35px;
 }
 </style>
