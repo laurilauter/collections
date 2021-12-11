@@ -11,6 +11,5 @@ const EventsSchema = new Schema({
 const Events = mongoose.model("Events", EventsSchema);
 
 module.exports = {
-    Events,
-  };
-  
+  Events,
+};
