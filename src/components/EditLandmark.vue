@@ -86,20 +86,21 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
+import { useRoute, /* useRouter */ } from "vue-router";
 export default {
   name: "AddLandmark",
   props: {
     showModal: Boolean,
   },
-  emits: ["submitted", "clicked"],
 
-  data() {
+  setup(props, context) {
+    const route = useRoute();
+    //const router = useRouter();
     let landmarkInfo = ref([]);
     const newUrl = ref("");
     const newTitle = ref("");
     const newImageUrlSet = ref([]);
     const newDescription = ref("");
-    const self = this;
 
     //GET request for a single landmark
     async function getLandmark(id) {
@@ -112,25 +113,15 @@ export default {
       landmarkInfo.value = result.data;
       console.log("landmarkInfo received: ", landmarkInfo.value);
       console.log(landmarkInfo.value.title);
-      self.newTitle = landmarkInfo.value.title;
-      self.newImageUrlSet = landmarkInfo.value.imageUrlSet;
-      self.newDescription = landmarkInfo.value.description;
+      newTitle.value = landmarkInfo.value.title;
+      newImageUrlSet.value = landmarkInfo.value.imageUrlSet;
+      newDescription.value = landmarkInfo.value.description;
     }
     // call the above function
-    getLandmark(this.$route.params.id);
+    getLandmark(route.params.id);
 
-    return {
-      self,
-      landmarkInfo,
-      newUrl,
-      newTitle,
-      newImageUrlSet,
-      newDescription,
-    };
-  },
-  methods: {
     //build image array
-    addImage(input) {
+    function addImage(input) {
       console.log("trying to insert: ", input);
       if (input) {
         this.newImageUrlSet.push(input);
@@ -139,9 +130,9 @@ export default {
       } else {
         console.log("Image URL not inserted");
       }
-    },
+    }
     //delete a thimbnail from the image array
-    deleteThumbnail(input) {
+    function deleteThumbnail(input) {
       console.log("this.newImageUrlSet before delete: ", this.newImageUrlSet);
       console.log("input: ", input);
       this.newImageUrlSet = this.newImageUrlSet.filter((image, index) => {
@@ -150,10 +141,10 @@ export default {
           return image;
         }
       });
-    },
+    }
     //edit a landmark
-    async editLandmark() {
-      let id = this.$route.params.id;
+    async function editLandmark() {
+      let id = route.params.id;
       let data = {
         title: this.newTitle,
         imageUrlSet: this.newImageUrlSet,
@@ -168,17 +159,31 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          this.$emit("clicked");
+          context.emit("clicked");
         })
         .catch(function (error) {
           console.log(error);
         });
-    },
+    }
+
     //emit close modal to parent
-    closeModal() {
-      this.$emit("clicked");
-    },
-  }, //methods end
+    function closeModal() {
+      context.emit("clicked");
+    }
+
+
+    return {
+      landmarkInfo,
+      newUrl,
+      newTitle,
+      newImageUrlSet,
+      newDescription,
+      addImage,
+      deleteThumbnail,
+      editLandmark,
+      closeModal,
+    };
+  },
 };
 </script>
 

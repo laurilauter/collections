@@ -70,6 +70,23 @@
               <div class="cardtext m-2">
                 <h4>{{ landmarkInfo.description }}</h4>
               </div>
+            <!--   <div class="cardtext m-2">
+                <h4>
+                  <a :href="landmarkInfo.link">{{ landmarkInfo.link }}</a>
+                </h4>
+              </div>
+              <div class="cardtext m-2">
+                <h4>{{ landmarkInfo.eventTime }}</h4>
+              </div>
+              <div class="cardtext m-2">
+                <h4>{{ landmarkInfo.location }}</h4>
+              </div>
+              <div class="cardtext m-2">
+                <h4>
+                  {{ landmarkInfo.author[0].userId }},
+                  {{ landmarkInfo.author[0].userName }}
+                </h4>
+              </div> -->
             </div>
           </div>
         </div>
@@ -87,6 +104,7 @@ import axios from "axios";
 import EditLandmark from "@/components/EditLandmark.vue";
 import Footer from "@/components/Footer.vue";
 import Navbar from "@/components/Navbar.vue";
+//import VueJwtDecode from "vue-jwt-decode";
 export default {
   name: "Detailview",
   components: {
@@ -107,9 +125,10 @@ export default {
     const currentNumber = ref(0);
     const images = ref([]);
     const imagesLenght = computed(() => images.value.length);
-    const token = ref(localStorage.getItem("token"));
     const showModal = ref(false);
     const id = route.params.id;
+    const token = ref(localStorage.getItem("token"));
+
     //GET request for a single landmark
     async function getLandmark(id) {
       const result = await axios.get(`/api/get-landmark/${id}`, {
@@ -123,6 +142,7 @@ export default {
     }
     // call the above function
     getLandmark(route.params.id);
+
     //Delete landmark
     function deleteLandmark() {
       axios
@@ -140,6 +160,7 @@ export default {
           console.log(error);
         });
     }
+
     //Slider next, previous logic
     function next() {
       if (currentNumber.value == imagesLenght.value - 1) {
@@ -264,6 +285,7 @@ h4 {
   background: white;
   border: none;
   position: relative;
+  cursor: pointer;
 }
 .btn-square {
   min-height: 50px !important;
@@ -271,6 +293,7 @@ h4 {
   background: hotpink;
   border: none;
   position: relative;
+  cursor: pointer;
 }
 .btn-square i {
   position: absolute;

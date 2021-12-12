@@ -44,10 +44,11 @@ router.patch("/edit-landmark/:id", async function (request, response) {
 });
 
 //Delete landmark
-router.post("/delete-landmark/:id", async function (request, response) {
+router.delete("/delete-landmark/:id", async function (request, response) {
+  console.log('request.params.id ', request.params.id)
   const result = await Events.deleteOne({ _id: request.params.id });
   console.log(result);
-  response.send(result);
+  response.send('BE Event Deleted');
 });
 
 module.exports = router;

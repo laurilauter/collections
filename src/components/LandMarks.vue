@@ -86,6 +86,7 @@
 
 <script>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import axios from "axios";
 import AddLandmark from "@/components/AddLandmark.vue";
 import Footer from "@/components/Footer.vue";
@@ -103,13 +104,15 @@ export default {
     description: String,
   },
 
-  data() {
+  setup() {
+    //const route = useRoute();
+    const router = useRouter();
     let landmarksFromServer = ref([]);
     const newTitle = ref("");
     const newImageUrl = ref("");
     const newDescription = ref("");
     let showModal = ref(false);
-    let token = ref(localStorage.getItem("token"));
+    const token = ref(localStorage.getItem("token"));
     console.log("token: ", token);
 
     //GET request for a list of landmarks
@@ -122,7 +125,7 @@ export default {
         })
         .catch(function (error) {
           if (error.response.status === 401) {
-            this.$router.push("/login");
+            router.push("/login");
           }
         });
       landmarksFromServer.value = result.data;
@@ -142,8 +145,8 @@ export default {
     }
 
     const logout = () => {
-      localStorage.clear(); //WORKS
-      //localStorage.removeItem("token");
+      //localStorage.clear();
+      localStorage.removeItem("token");
       console.log("token removed");
       getLandmarks();
       location.reload();

@@ -46,7 +46,9 @@
                 :key="image"
               >
                 <img
-                  class="tiny-image img-thumbnail" width="100" height="100"
+                  class="tiny-image img-thumbnail"
+                  width="100"
+                  height="100"
                   :src="image"
                   alt="this image is missing"
                 />
@@ -68,8 +70,31 @@
             name="description"
             placeholder="Description goes here"
             style="height: 10em"
-            required
           ></textarea>
+
+          <input
+            v-model="newLink"
+            type="text"
+            name="link"
+            placeholder="Link"
+            class="form-control"
+          />
+
+          <input
+            v-model="newLocation"
+            type="text"
+            name="location"
+            placeholder="Location"
+            class="form-control"
+          />
+
+          <input
+            v-model="newTime"
+            type="datetime-local"
+            name="time"
+            placeholder="Time here"
+            class="form-control"
+          />
 
           <button
             @click="addNewLandmark"
@@ -93,24 +118,18 @@ export default {
   props: {
     showModal: Boolean,
   },
-  emits: ["submitted", "clicked"],
 
-  data() {
+  setup(props, context) {
     const newUrl = ref("");
     const newTitle = ref("");
     const newImageUrlSet = ref([]);
     const newDescription = ref("");
+    const newLink = ref("");
+    const newLocation = ref("");
+    const newTime = ref("");
 
-    return {
-      newUrl,
-      newTitle,
-      newImageUrlSet,
-      newDescription,
-    };
-  },
-  methods: {
     //build image array
-    addImage(input) {
+    function addImage(input) {
       console.log("trying to insert: ", input);
       if (input) {
         this.newImageUrlSet.push(input);
@@ -119,22 +138,29 @@ export default {
       } else {
         console.log("Image URL not inserted");
       }
-    },
+    }
 
-    deleteThumbnail(input) {
+    function deleteThumbnail(input) {
       console.log("this.newImageUrlSet before delete: ", this.newImageUrlSet);
       this.newImageUrlSet = this.newImageUrlSet.filter((image, index) => {
         if (index !== input) {
           return image;
         }
       });
-    },
+    }
 
-    async addNewLandmark() {
+    async function addNewLandmark() {
       let data = {
         title: this.newTitle,
         imageUrlSet: this.newImageUrlSet,
         description: this.newDescription,
+        link: this.newLink,
+        location: this.newLocation,
+        eventTime: this.newTime,
+        author: {
+          userId: 1,
+          userName: 'Cody' 
+        }
       };
       console.log("Data from modal: ", data);
       await axios
@@ -145,19 +171,33 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          this.$emit("clicked");
+          context.emit("clicked");
         })
         .catch(function (error) {
           console.log(error);
         });
-    },
-    closeModal() {
-      this.$emit("clicked");
-    },
+    }
+
+    function closeModal() {
+      context.emit("clicked");
+    }
+
+    return {
+      newUrl,
+      newTitle,
+      newImageUrlSet,
+      newDescription,
+      newLink,
+      newLocation,
+      newTime,
+      addImage,
+      deleteThumbnail,
+      addNewLandmark,
+      closeModal,
+    };
   },
 };
 </script>
-
 
 <style scoped>
 .modal {
@@ -195,7 +235,6 @@ export default {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
 }
-
 
 button {
   margin-top: 0em;
