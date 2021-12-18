@@ -21,8 +21,8 @@ app.use(
     path: [
       "/api/auth/register",
       "/api/auth/login",
-      "/api/get-landmarks",
-      { url: /^\/api\/get-landmark\/.*/, methods: ['GET'] }, // removed PUT
+      "/api/get-events",
+      { url: /^\/api\/get-event\/.*/, methods: ['GET'] }, // removed PUT
     ],
   })
 );

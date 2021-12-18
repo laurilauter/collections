@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "Backend server for Landmarks",
+  "description": "Backend server for Events",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon .",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/laurilautervikk/landmarks.git"
+    "url": "git+https://github.com/laurilautervikk/events.git"
   },
   "author": "Lauri",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/laurilautervikk/landmarks/issues"
+    "url": "https://github.com/laurilautervikk/events/issues"
   },
-  "homepage": "https://github.com/laurilautervikk/landmarks#readme",
+  "homepage": "https://github.com/laurilautervikk/events#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",

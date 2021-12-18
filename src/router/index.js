@@ -1,28 +1,28 @@
 
 import { createRouter, createWebHistory } from "vue-router";
-import LandMarks from "@/components/LandMarks.vue";
-import AddLandmark from "@/components/AddLandmark.vue";
+import Events from "@/components/Events.vue";
+import AddEvent from "@/components/AddEvent.vue";
 import Detail from "@/views/Detail.vue";
 import Register from "@/views/Register.vue";
 import Login from "@/views/Login.vue";
 import Detailview from "@/components/Detailview.vue";
-import EditLandmark from "@/components/EditLandmark.vue";
-import DeleteLandmark from "@/components/EditLandmark.vue";
+import EditEvent from "@/components/EditEvent.vue";
+import DeleteEvent from "@/components/EditEvent.vue";
 import PageNotFound from "@/views/PageNotFound.vue";
 
 const routes = [
   {
     path: "/",
-    name: "LandMarks",
-    component: LandMarks,
+    name: "Events",
+    component: Events,
     meta: {
       auth: false,
     },
     children: [
       {
-        path: "/add-landmark/:id",
-        name: "AddLandmark",
-        component: AddLandmark,
+        path: "/add-event/:id",
+        name: "AddEvent",
+        component: AddEvent,
         meta: {
           auth: true,
         },
@@ -30,7 +30,7 @@ const routes = [
     ],
   },
   {
-    path: "/landmark",
+    path: "/event",
     name: "Detail",
     component: Detail,
     meta: {
@@ -38,7 +38,7 @@ const routes = [
     },
     children: [
       {
-        path: "/landmark/:id",
+        path: "/event/:id",
         name: "Detailview",
         component: Detailview,
         meta: {
@@ -47,17 +47,17 @@ const routes = [
       },
 
       {
-        path: "/edit-landmark/:id",
-        name: "EditLandmark",
-        component: EditLandmark,
+        path: "/edit-event/:id",
+        name: "EditEvent",
+        component: EditEvent,
         meta: {
           auth: true,
         },
       },
       {
-        path: "/delete-landmark/:id",
-        name: "DeleteLandmark",
-        component: DeleteLandmark,
+        path: "/delete-event/:id",
+        name: "DeleteEvent",
+        component: DeleteEvent,
         meta: {
           auth: true,
         },

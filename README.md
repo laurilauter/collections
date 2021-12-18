@@ -1,4 +1,4 @@
-# landmarks
+# events
 
 ## Project setup
 ```

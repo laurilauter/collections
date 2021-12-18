@@ -21,7 +21,7 @@
           </div>
           <div
             class="btn-square m-1 mt-1 mb-3 d-inline-flex align-items-center"
-            @click="deleteLandmark"
+            @click="deleteEvent"
             v-if="!showModal && token"
           >
             <i class="fs-2 bi bi-trash"></i>
@@ -31,15 +31,15 @@
 
       <div class="row d-flex justify-content-center mb-5">
         <!-- MODAL START -->
-        <EditLandmark
+        <EditEvent
           v-if="showModal"
           :showModal="showModal"
           @clicked="onChildClick"
         >
           <slot>
-            <h3 class="modal-title">Edit this Landmark</h3>
+            <h3 class="modal-title">Edit this Event</h3>
           </slot>
-        </EditLandmark>
+        </EditEvent>
         <!-- MODAL END -->
 
         <div class="row mx-3 image-text-box">
@@ -48,7 +48,7 @@
           >
             <!-- SLIDER START -->
             <div class="card-image-box">
-              <img :src="images[currentNumber]" alt="landmark image" />
+              <img :src="images[currentNumber]" alt="event image" />
 
               <div class="btnNext btn-grey float-end me-3" @click="next">
                 <i class="bi bi-arrow-right fs-2"></i>
@@ -64,27 +64,27 @@
           >
             <div class="row">
               <div class="row text-center">
-                <h1>{{ landmarkInfo.title }}</h1>
+                <h1>{{ eventInfo.title }}</h1>
               </div>
               <br />
               <div class="cardtext m-2">
-                <h4>{{ landmarkInfo.description }}</h4>
+                <h4>{{ eventInfo.description }}</h4>
               </div>
             <!--   <div class="cardtext m-2">
                 <h4>
-                  <a :href="landmarkInfo.link">{{ landmarkInfo.link }}</a>
+                  <a :href="eventInfo.link">{{ eventInfo.link }}</a>
                 </h4>
               </div>
               <div class="cardtext m-2">
-                <h4>{{ landmarkInfo.eventTime }}</h4>
+                <h4>{{ eventInfo.eventTime }}</h4>
               </div>
               <div class="cardtext m-2">
-                <h4>{{ landmarkInfo.location }}</h4>
+                <h4>{{ eventInfo.location }}</h4>
               </div>
               <div class="cardtext m-2">
                 <h4>
-                  {{ landmarkInfo.author[0].userId }},
-                  {{ landmarkInfo.author[0].userName }}
+                  {{ eventInfo.author[0].userId }},
+                  {{ eventInfo.author[0].userName }}
                 </h4>
               </div> -->
             </div>
@@ -101,14 +101,14 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
-import EditLandmark from "@/components/EditLandmark.vue";
+import EditEvent from "@/components/EditEvent.vue";
 import Footer from "@/components/Footer.vue";
 import Navbar from "@/components/Navbar.vue";
 //import VueJwtDecode from "vue-jwt-decode";
 export default {
   name: "Detailview",
   components: {
-    EditLandmark,
+    EditEvent,
     Footer,
     Navbar,
   },
@@ -121,7 +121,7 @@ export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const landmarkInfo = ref([]);
+    const eventInfo = ref([]);
     const currentNumber = ref(0);
     const images = ref([]);
     const imagesLenght = computed(() => images.value.length);
@@ -129,30 +129,30 @@ export default {
     const id = route.params.id;
     const token = ref(localStorage.getItem("token"));
 
-    //GET request for a single landmark
-    async function getLandmark(id) {
-      const result = await axios.get(`/api/get-landmark/${id}`, {
+    //GET request for a single event
+    async function getEvent(id) {
+      const result = await axios.get(`/api/get-event/${id}`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
       });
-      console.log("FE getLandmark is called");
-      landmarkInfo.value = result.data;
-      images.value = landmarkInfo.value.imageUrlSet;
+      console.log("FE getEvent is called");
+      eventInfo.value = result.data;
+      images.value = eventInfo.value.imageUrlSet;
     }
     // call the above function
-    getLandmark(route.params.id);
+    getEvent(route.params.id);
 
-    //Delete landmark
-    function deleteLandmark() {
+    //Delete event
+    function deleteEvent() {
       axios
-        .delete(`/api/delete-landmark/${id}`, {
+        .delete(`/api/delete-event/${id}`, {
           headers: {
             Authorization: localStorage.getItem("token"),
           },
         })
         .then((response) => {
-          console.log("Landmarke Delete returned BE -> FE", response);
+          console.log("Evente Delete returned BE -> FE", response);
           //Send back to main page
           router.push("/");
         })
@@ -180,17 +180,17 @@ export default {
     function openModal() {
       showModal.value = true;
     }
-    //close modal, reload landmarks
+    //close modal, reload events
     async function onChildClick() {
       showModal.value = false;
-      await getLandmark(id);
+      await getEvent(id);
     }
     onMounted(() => {
       console.log("token: ", token);
     });
     return {
-      deleteLandmark,
-      landmarkInfo,
+      deleteEvent,
+      eventInfo,
       token,
       openModal,
       onChildClick,
@@ -284,6 +284,7 @@ h4 {
   opacity: 0.3;
   background: white;
   border: none;
+  border-radius: 0.25em;
   position: relative;
   cursor: pointer;
 }
@@ -292,6 +293,7 @@ h4 {
   min-width: 50px !important;
   background: hotpink;
   border: none;
+  border-radius: 0.25em;
   position: relative;
   cursor: pointer;
 }

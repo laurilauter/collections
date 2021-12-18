@@ -3,7 +3,7 @@
     <div v-if="showModal" class="modal-content">
       <div class="modal-body px-4">
         <div class="d-flex justify-content-between">
-          <h3 class="px-5 pt-3 mb-0 align-bottom">Edit this Event</h3>
+          <h3 class="px-5 pt-3 mb-0 align-bottom">Add a new event</h3>
           <div @click="closeModal" class="align-top">
             <i class="align-top fs-2 bi bi-x"></i>
           </div>
@@ -15,6 +15,7 @@
             v-model="newTitle"
             type="text"
             name="title"
+            placeholder="Title"
             class="form-control"
             required
           />
@@ -27,25 +28,27 @@
               placeholder="Image URL"
               required
             />
-            <div
+            <button
               @click="addImage(newUrl)"
               class="plus-box btn btn-outline-secondary btn-height"
               type="button"
               :disabled="newUrl.length == 0"
             >
               <i class="plus fs-2 bi bi-plus text-dark"></i>
-            </div>
+            </button>
           </div>
 
           <div class="container">
             <div id="thumb-row" class="row d-flex flex-wrap">
               <div
-                class="image-box col-6 col-sm-6 col-md-4 col-lg-3"
+                class="image-box col-6 col-md-4 col-lg-3 justify-content-center"
                 v-for="(image, index) in newImageUrlSet"
                 :key="image"
               >
                 <img
                   class="tiny-image img-thumbnail"
+                  width="100"
+                  height="100"
                   :src="image"
                   alt="this image is missing"
                 />
@@ -65,16 +68,40 @@
             class="form-control"
             id="description"
             name="description"
+            placeholder="Description goes here"
             style="height: 10em"
-            required
           ></textarea>
 
+          <input
+            v-model="newLink"
+            type="text"
+            name="link"
+            placeholder="Link"
+            class="form-control"
+          />
+
+          <input
+            v-model="newLocation"
+            type="text"
+            name="location"
+            placeholder="Location"
+            class="form-control"
+          />
+
+          <input
+            v-model="newTime"
+            type="datetime-local"
+            name="time"
+            placeholder="Time here"
+            class="form-control"
+          />
+
           <button
-            @click="editLandmark"
+            @click="addNewEvent"
             type="submit"
             class="homemade-button w-100 mt-1"
           >
-            Save It
+            Add It
           </button>
         </div>
 
@@ -86,39 +113,20 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
-import { useRoute, /* useRouter */ } from "vue-router";
 export default {
-  name: "AddLandmark",
+  name: "AddEvent",
   props: {
     showModal: Boolean,
   },
 
   setup(props, context) {
-    const route = useRoute();
-    //const router = useRouter();
-    let landmarkInfo = ref([]);
     const newUrl = ref("");
     const newTitle = ref("");
     const newImageUrlSet = ref([]);
     const newDescription = ref("");
-
-    //GET request for a single landmark
-    async function getLandmark(id) {
-      const result = await axios.get(`/api/get-landmark/${id}`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      });
-      console.log("landmarkInfo is called");
-      landmarkInfo.value = result.data;
-      console.log("landmarkInfo received: ", landmarkInfo.value);
-      console.log(landmarkInfo.value.title);
-      newTitle.value = landmarkInfo.value.title;
-      newImageUrlSet.value = landmarkInfo.value.imageUrlSet;
-      newDescription.value = landmarkInfo.value.description;
-    }
-    // call the above function
-    getLandmark(route.params.id);
+    const newLink = ref("");
+    const newLocation = ref("");
+    const newTime = ref("");
 
     //build image array
     function addImage(input) {
@@ -131,34 +139,38 @@ export default {
         console.log("Image URL not inserted");
       }
     }
-    //delete a thimbnail from the image array
+
     function deleteThumbnail(input) {
       console.log("this.newImageUrlSet before delete: ", this.newImageUrlSet);
-      console.log("input: ", input);
       this.newImageUrlSet = this.newImageUrlSet.filter((image, index) => {
-        console.log("this.newImageUrlSet after filter: ", this.newImageUrlSet);
         if (index !== input) {
           return image;
         }
       });
     }
-    //edit a landmark
-    async function editLandmark() {
-      let id = route.params.id;
+
+    async function addNewEvent() {
       let data = {
         title: this.newTitle,
         imageUrlSet: this.newImageUrlSet,
         description: this.newDescription,
+        link: this.newLink,
+        location: this.newLocation,
+        eventTime: this.newTime,
+        author: {
+          userId: 1,
+          userName: 'Cody' 
+        }
       };
       console.log("Data from modal: ", data);
       await axios
-        .patch(`/api/edit-landmark/${id}`, data, {
+        .post("/api/add-event", data, {
           headers: {
             Authorization: localStorage.getItem("token"),
           },
         })
-        .then((response) => {
-          console.log(response);
+        .then((res) => {
+          console.log(res);
           context.emit("clicked");
         })
         .catch(function (error) {
@@ -166,21 +178,21 @@ export default {
         });
     }
 
-    //emit close modal to parent
     function closeModal() {
       context.emit("clicked");
     }
 
-
     return {
-      landmarkInfo,
       newUrl,
       newTitle,
       newImageUrlSet,
       newDescription,
+      newLink,
+      newLocation,
+      newTime,
       addImage,
       deleteThumbnail,
-      editLandmark,
+      addNewEvent,
       closeModal,
     };
   },
@@ -204,18 +216,19 @@ export default {
   flex-direction: column;
   border-radius: 0.5em;
 }
-.modal-content {
-  border: none;
-}
 
 .homemade-button {
-  height: 50px;
-  width: fit-content;
-  margin-top: auto;
-  background: linear-gradient(to right, #16c0b0, #84cf6a);
+  min-height: 50px !important;
+  min-width: 50px !important;
+  background: hotpink;
   border: none;
-  border-radius: 0.5em;
-  font-weight: 600;
+  position: relative;
+}
+
+.btn-square i {
+  position: absolute;
+  -ms-transform: translate(-10%, -10%);
+  transform: translate(10px, -10%);
 }
 
 .form-control {
@@ -228,13 +241,13 @@ button {
   margin-bottom: 0em;
 }
 
-.btn-height {
+/* .btn-height {
   margin-top: 8px;
   height: 38px;
   border: 0px;
   background: linear-gradient(to right, #16c0b0, #84cf6a);
 }
-
+ */
 .tiny-image {
   width: 100px;
   height: 100px;

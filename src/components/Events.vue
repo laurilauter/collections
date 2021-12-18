@@ -44,15 +44,15 @@
           >
             <i class="plus fs-2 bi bi-plus text-dark"></i>
           </div>
-          <AddLandmark
+          <AddEvent
             v-if="showModal"
             :showModal="showModal"
             @clicked="onChildClick"
           >
             <slot>
-              <h3 class="modal-title">Add a Landmark</h3>
+              <h3 class="modal-title">Add a Event</h3>
             </slot>
-          </AddLandmark>
+          </AddEvent>
           <!-- MODAL END -->
         </div>
       </div>
@@ -62,19 +62,19 @@
       <div class="row justify-content-center">
         <div
           class="col-auto p-3"
-          v-for="landmark in landmarksFromServer"
-          :key="landmark"
+          v-for="event in eventsFromServer"
+          :key="event"
         >
           <div class="box mx-auto d-block">
-            <router-link :to="`/landmark/${landmark._id}`" class="col">
+            <router-link :to="`/event/${event._id}`" class="col">
               <div class="img-frame">
                 <img
                   class="mx-auto d-block"
-                  :src="landmark.imageUrlSet[0]"
-                  alt="landmark image"
+                  :src="event.imageUrlSet[0]"
+                  alt="event image"
                 />
               </div>
-              <p class="title" id="title">{{ landmark.title }}</p>
+              <p class="title" id="title">{{ event.title }}</p>
             </router-link>
           </div>
         </div>
@@ -88,13 +88,13 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import AddLandmark from "@/components/AddLandmark.vue";
+import AddEvent from "@/components/AddEvent.vue";
 import Footer from "@/components/Footer.vue";
 import Navbar from "@/components/Navbar.vue";
 export default {
-  name: "Landmarks",
+  name: "Events",
   components: {
-    AddLandmark,
+    AddEvent,
     Footer,
     Navbar,
   },
@@ -107,7 +107,7 @@ export default {
   setup() {
     //const route = useRoute();
     const router = useRouter();
-    let landmarksFromServer = ref([]);
+    let eventsFromServer = ref([]);
     const newTitle = ref("");
     const newImageUrl = ref("");
     const newDescription = ref("");
@@ -115,10 +115,10 @@ export default {
     const token = ref(localStorage.getItem("token"));
     console.log("token: ", token);
 
-    //GET request for a list of landmarks
-    async function getLandmarks() {
+    //GET request for a list of events
+    async function getEvents() {
       const result = await axios
-        .get("/api/get-landmarks", {
+        .get("/api/get-events", {
           headers: {
             Authorization: localStorage.getItem("token"),
           },
@@ -128,27 +128,27 @@ export default {
             router.push("/login");
           }
         });
-      landmarksFromServer.value = result.data;
-      console.log("landmarksFromServer ", landmarksFromServer.value);
+      eventsFromServer.value = result.data;
+      console.log("eventsFromServer ", eventsFromServer.value);
     }
     // call the above function
-    getLandmarks();
+    getEvents();
 
     //open modal
     function openModal() {
       showModal.value = true;
     }
-    //close modal, reload landmarks
+    //close modal, reload events
     async function onChildClick() {
       showModal.value = false;
-      await getLandmarks();
+      await getEvents();
     }
 
     const logout = () => {
       //localStorage.clear();
       localStorage.removeItem("token");
       console.log("token removed");
-      getLandmarks();
+      getEvents();
       location.reload();
       //this.$router.push('../views/login'); //NOT WORKING
     };
@@ -159,7 +159,7 @@ export default {
       openModal,
       onChildClick,
       showModal,
-      landmarksFromServer,
+      eventsFromServer,
       newTitle,
       newImageUrl,
       newDescription,
@@ -214,6 +214,7 @@ a {
   min-width: 50px !important;
   background: hotpink;
   border: none;
+  border-radius: 0.25em;
   position: relative;
   cursor: pointer;
 
