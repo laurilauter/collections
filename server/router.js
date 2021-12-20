@@ -34,8 +34,13 @@ router.patch("/edit-event/:id", async function (request, response) {
     {
       $set: {
         title: request.body.title,
-        imageUrlSet: request.body.imageUrlSet,
+        imageUrl: request.body.imageUrl,
         description: request.body.description,
+        link: request.body.link,
+        location: request.body.location,
+        eventTime: request.body.eventTime,
+        author: request.body.author,
+        active: request.body.active,
       },
     }
   );
@@ -49,6 +54,13 @@ router.delete("/delete-event/:id", async function (request, response) {
   const result = await Events.deleteOne({ _id: request.params.id });
   console.log(result);
   response.send('BE Event Deleted');
+});
+
+//Check token
+router.get("/check-token", function (request, response) {
+  const result = "Checking the token";
+  console.log(result);
+  response.send('Checked the token');
 });
 
 module.exports = router;

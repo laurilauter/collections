@@ -21,41 +21,27 @@
 
           <div class="input-group">
             <input
-              v-model="newUrl"
+              v-model="newImageUrl"
               type="url"
               class="form-control"
               placeholder="Image URL"
               required
             />
-            <div
-              @click="addImage(newUrl)"
-              class="plus-box btn btn-outline-secondary btn-height"
-              type="button"
-              :disabled="newUrl.length == 0"
-            >
-              <i class="plus fs-2 bi bi-plus text-dark"></i>
-            </div>
           </div>
 
           <div class="container">
             <div id="thumb-row" class="row d-flex flex-wrap">
               <div
-                class="image-box col-6 col-sm-6 col-md-4 col-lg-3"
-                v-for="(image, index) in newImageUrlSet"
-                :key="image"
+                class="image-box col-6 col-md-4 col-lg-3 justify-content-center"
               >
                 <img
                   class="tiny-image img-thumbnail"
-                  :src="image"
-                  alt="this image is missing"
+                  width="100"
+                  height="100"
+                  :src="newImageUrl"
+                  v-if="newImageUrl"
+                  alt="no image"
                 />
-                <div
-                  @click="deleteThumbnail(index)"
-                  class="delete"
-                  type="button"
-                >
-                  <i class="fs-2 bi bi-trash"></i>
-                </div>
               </div>
             </div>
           </div>
@@ -65,9 +51,41 @@
             class="form-control"
             id="description"
             name="description"
-            style="height: 10em"
-            required
+            placeholder="Description goes here"
+            style="height: 8em"
           ></textarea>
+
+          <input
+            v-model="newLink"
+            type="text"
+            name="link"
+            placeholder="Link"
+            class="form-control"
+          />
+
+          <input
+            v-model="newLocation"
+            type="text"
+            name="location"
+            placeholder="Location"
+            class="form-control"
+          />
+
+          <input
+            v-model="newDay"
+            type="date"
+            name="new-day"
+            placeholder="Date here"
+            class="form-control"
+          />
+
+          <input
+            v-model="newHour"
+            type="time"
+            name="new-hour"
+            placeholder="Time here"
+            class="form-control"
+          />
 
           <button
             @click="editEvent"
@@ -95,12 +113,16 @@ export default {
 
   setup(props, context) {
     const route = useRoute();
-    //const router = useRouter();
     let eventInfo = ref([]);
-    const newUrl = ref("");
+    //input variables
     const newTitle = ref("");
-    const newImageUrlSet = ref([]);
+    const newImageUrl = ref("");
     const newDescription = ref("");
+    const newLink = ref("");
+    const newLocation = ref("");
+    //datetime stuff
+    const newDay = ref("");
+    const newHour = ref("");
 
     //GET request for a single event
     async function getEvent(id) {
@@ -114,41 +136,29 @@ export default {
       console.log("eventInfo received: ", eventInfo.value);
       console.log(eventInfo.value.title);
       newTitle.value = eventInfo.value.title;
-      newImageUrlSet.value = eventInfo.value.imageUrlSet;
+      newImageUrl.value = eventInfo.value.imageUrl;
       newDescription.value = eventInfo.value.description;
+      newLink.value = eventInfo.value.link;
+      newLocation.value = eventInfo.value.location;
     }
     // call the above function
     getEvent(route.params.id);
 
-    //build image array
-    function addImage(input) {
-      console.log("trying to insert: ", input);
-      if (input) {
-        this.newImageUrlSet.push(input);
-        this.newUrl = "";
-        console.log("newImageUrlSet: ", this.newImageUrlSet);
-      } else {
-        console.log("Image URL not inserted");
-      }
-    }
-    //delete a thimbnail from the image array
-    function deleteThumbnail(input) {
-      console.log("this.newImageUrlSet before delete: ", this.newImageUrlSet);
-      console.log("input: ", input);
-      this.newImageUrlSet = this.newImageUrlSet.filter((image, index) => {
-        console.log("this.newImageUrlSet after filter: ", this.newImageUrlSet);
-        if (index !== input) {
-          return image;
-        }
-      });
-    }
     //edit a event
     async function editEvent() {
       let id = route.params.id;
       let data = {
-        title: this.newTitle,
-        imageUrlSet: this.newImageUrlSet,
-        description: this.newDescription,
+        title: newTitle.value,
+        imageUrl: newImageUrl.value,
+        description: newDescription.value,
+        link: newLink.value,
+        location: newLocation.value,
+        eventTime: newDay.value + "T" + newHour.value,
+        author: {
+          userId: 1,
+          userName: "Cody",
+        },
+        active: true,
       };
       console.log("Data from modal: ", data);
       await axios
@@ -173,13 +183,14 @@ export default {
 
 
     return {
+      newLink,
+      newLocation,
+      newDay,
+      newHour,
       eventInfo,
-      newUrl,
+      newImageUrl,
       newTitle,
-      newImageUrlSet,
       newDescription,
-      addImage,
-      deleteThumbnail,
       editEvent,
       closeModal,
     };

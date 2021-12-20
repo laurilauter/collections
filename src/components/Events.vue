@@ -5,30 +5,9 @@
       <div
         class="row d-flex justify-content-between align-items-center header-row"
       >
-        <div class="col-sm-12 col col-md-12 col-lg-3 float-left d-flex justify-content-start">
-          <div class="row m-3 justify-content-end">
-            <div
-              class="btn-square btn-long m-1 mt-1 mb-3 d-inline-flex align-items-center fs-5 justify-content-center"
-              @click="$router.push('/login')"
-              v-if="!token"
-            >
-              Login
-            </div>
-            <div
-              class="btn-square btn-long m-1 mt-1 mb-3 d-inline-flex align-items-center fs-5 justify-content-center"
-              @click="$router.push('/register')"
-              v-if="!token"
-            >
-              Register
-            </div>
-            <div
-              class="btn-square btn-long m-1 mt-1 mb-3 d-inline-flex align-items-center fs-5 justify-content-center"
-              @click="logout"
-              v-if="token"
-            >
-              Logout
-            </div>
-          </div>
+        <div
+          class="col-sm-12 col col-md-12 col-lg-3 float-left d-flex justify-content-start"
+        >
         </div>
         <div
           class="col col-xs-12 col-sm-12 col-md-12 col-lg-6 p-5 d-flex justify-content-center"
@@ -70,11 +49,23 @@
               <div class="img-frame">
                 <img
                   class="mx-auto d-block"
-                  :src="event.imageUrlSet[0]"
+                  :src="event.imageUrl"
                   alt="event image"
                 />
               </div>
-              <p class="title" id="title">{{ event.title }}</p>
+              <div class="card-text-box p-3">
+                <p class="title" id="title">{{ event.title }}</p>
+                <p>{{ excerpt(event.description) }}</p>
+
+                <div class="time-place justify-content-start mb-1">
+                  <p class="text-start">
+                    <span>{{ getDate(event.eventTime) }}</span>
+                    <span>&nbsp;&nbsp;&nbsp;</span>
+                    <span>{{ getTime(event.eventTime) }}</span>
+                  </p>
+                  <p class="text-start">{{ event.location }}</p>
+                </div>
+              </div>
             </router-link>
           </div>
         </div>
@@ -85,12 +76,13 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import AddEvent from "@/components/AddEvent.vue";
 import Footer from "@/components/Footer.vue";
 import Navbar from "@/components/Navbar.vue";
+import dayjs from "dayjs";
 export default {
   name: "Events",
   components: {
@@ -113,7 +105,27 @@ export default {
     const newDescription = ref("");
     let showModal = ref(false);
     const token = ref(localStorage.getItem("token"));
-    console.log("token: ", token);
+
+    //Make description shorter
+    const excerpt = (input) => {
+      if (input.length > 100) {
+        return input.substring(0, 100) + "...";
+      } else {
+        return input;
+      }
+    };
+
+    const getDate = (dateString) => {
+      const date = dayjs(dateString);
+      // Then specify how you want your dates to be formatted
+      return date.format("DD.MM.YYYY");
+    };
+
+    const getTime = (dateString) => {
+      const date = dayjs(dateString);
+      // Then specify how you want your dates to be formatted
+      return date.format("HH:mm");
+    };
 
     //GET request for a list of events
     async function getEvents() {
@@ -131,8 +143,9 @@ export default {
       eventsFromServer.value = result.data;
       console.log("eventsFromServer ", eventsFromServer.value);
     }
-    // call the above function
-    getEvents();
+    //call the above func
+    //getEvents();
+    
 
     //open modal
     function openModal() {
@@ -144,18 +157,16 @@ export default {
       await getEvents();
     }
 
-    const logout = () => {
-      //localStorage.clear();
-      localStorage.removeItem("token");
-      console.log("token removed");
+    
+    onMounted(() => {
       getEvents();
-      location.reload();
-      //this.$router.push('../views/login'); //NOT WORKING
-    };
+    });
 
     return {
+      getDate,
+      getTime,
+      excerpt,
       token,
-      logout,
       openModal,
       onChildClick,
       showModal,
@@ -169,7 +180,6 @@ export default {
 </script>
 
 <style scoped>
-
 .box {
   margin: 1em 0;
   text-align: center;
@@ -179,6 +189,17 @@ export default {
   padding: 0px;
   box-shadow: 5px 10px 8px silver;
   background: lightgrey;
+}
+
+.card-text-box {
+  width: 300px;
+  height: 260px;
+  color: #454545;
+  background: whitesmoke;
+}
+
+.time-place {
+  font-weight: 700;
 }
 
 .box img {
@@ -194,8 +215,9 @@ export default {
 }
 
 .title {
-  margin-top: 5%;
-  font-size: 1.4em;
+  margin-top: 0em;
+  font-size: 1.8em;
+  font-weight: 500;
   text-decoration: none;
   color: #454545;
 }
@@ -208,7 +230,6 @@ a {
   width: 100vw;
 }
 
-
 .btn-square {
   min-height: 50px !important;
   min-width: 50px !important;
@@ -217,7 +238,6 @@ a {
   border-radius: 0.25em;
   position: relative;
   cursor: pointer;
-
 }
 
 .btn-long {
@@ -235,4 +255,8 @@ a {
   justify-content: space-between;
   align-items: center;
 }
+
+/* div {
+  border: solid 1px red;
+} */
 </style>

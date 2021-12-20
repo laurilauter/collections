@@ -46,19 +46,10 @@
           <div
             class="col-12 col-lg-7 col-md-12 col-sm-12 margin-fix card-image-box-outer"
           >
-            <!-- SLIDER START -->
             <div class="card-image-box">
-              <img :src="images[currentNumber]" alt="event image" />
-
-              <div class="btnNext btn-grey float-end me-3" @click="next">
-                <i class="bi bi-arrow-right fs-2"></i>
-              </div>
-              <div class="btnPrev btn-grey float-start ms-3" @click="prev">
-                <i class="bi bi-arrow-left fs-2"></i>
-              </div>
+              <img :src="eventInfo.imageUrl" alt="event image" />
             </div>
           </div>
-          <!-- SLIDER END -->
           <div
             class="col-12 col-lg-5 col-md-12 col-sm-12 d-flex align-items-center"
           >
@@ -67,44 +58,36 @@
                 <h1>{{ eventInfo.title }}</h1>
               </div>
               <br />
-              <div class="cardtext m-2">
-                <h4>{{ eventInfo.description }}</h4>
+              <div class="cardtext m-3">
+                <p>{{ eventInfo.description }}</p>
+                <p>{{ eventInfo.link }}</p>
+                <div class="time-place justify-content-start mb-1">
+                  <p class="text-start">
+                    <span>{{ getDate(eventInfo.eventTime) }}</span>
+                    <span>&nbsp;&nbsp;&nbsp;</span>
+                    <span>{{ getTime(eventInfo.eventTime) }}</span>
+                  </p>
+                  <p class="text-start">{{ eventInfo.location }}</p>
+                </div>
               </div>
-            <!--   <div class="cardtext m-2">
-                <h4>
-                  <a :href="eventInfo.link">{{ eventInfo.link }}</a>
-                </h4>
-              </div>
-              <div class="cardtext m-2">
-                <h4>{{ eventInfo.eventTime }}</h4>
-              </div>
-              <div class="cardtext m-2">
-                <h4>{{ eventInfo.location }}</h4>
-              </div>
-              <div class="cardtext m-2">
-                <h4>
-                  {{ eventInfo.author[0].userId }},
-                  {{ eventInfo.author[0].userName }}
-                </h4>
-              </div> -->
             </div>
           </div>
         </div>
       </div>
     </div>
     <Footer />
-    <!-- old image -->
   </div>
 </template>
 
 <script>
-import { ref, computed, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import EditEvent from "@/components/EditEvent.vue";
 import Footer from "@/components/Footer.vue";
 import Navbar from "@/components/Navbar.vue";
-//import VueJwtDecode from "vue-jwt-decode";
+import dayjs from "dayjs";
+
 export default {
   name: "Detailview",
   components: {
@@ -124,10 +107,23 @@ export default {
     const eventInfo = ref([]);
     const currentNumber = ref(0);
     const images = ref([]);
-    const imagesLenght = computed(() => images.value.length);
+    //const imagesLenght = computed(() => images.value.length);
     const showModal = ref(false);
     const id = route.params.id;
     const token = ref(localStorage.getItem("token"));
+
+    //convert dates
+    const getDate = (dateString) => {
+      const date = dayjs(dateString);
+      // Then specify how you want your dates to be formatted
+      return date.format("DD.MM.YYYY");
+    };
+
+    const getTime = (dateString) => {
+      const date = dayjs(dateString);
+      // Then specify how you want your dates to be formatted
+      return date.format("HH:mm");
+    };
 
     //GET request for a single event
     async function getEvent(id) {
@@ -138,10 +134,7 @@ export default {
       });
       console.log("FE getEvent is called");
       eventInfo.value = result.data;
-      images.value = eventInfo.value.imageUrlSet;
     }
-    // call the above function
-    getEvent(route.params.id);
 
     //Delete event
     function deleteEvent() {
@@ -161,21 +154,6 @@ export default {
         });
     }
 
-    //Slider next, previous logic
-    function next() {
-      if (currentNumber.value == imagesLenght.value - 1) {
-        currentNumber.value = 0;
-      } else {
-        currentNumber.value += 1;
-      }
-    }
-    function prev() {
-      if (currentNumber.value == 0) {
-        currentNumber.value = imagesLenght.value - 1;
-      } else {
-        currentNumber.value -= 1;
-      }
-    }
     //open modal
     function openModal() {
       showModal.value = true;
@@ -186,27 +164,26 @@ export default {
       await getEvent(id);
     }
     onMounted(() => {
-      console.log("token: ", token);
+      getEvent(route.params.id);
     });
     return {
+      getDate,
+      getTime,
       deleteEvent,
       eventInfo,
       token,
       openModal,
       onChildClick,
       showModal,
-      next,
-      prev,
       images,
       currentNumber,
-      imagesLenght,
     };
   },
 };
 </script>
 
 <style scoped>
-.card-image-box .btnPrev {
+/* .card-image-box .btnPrev {
   position: absolute;
   top: 45%;
   left: 0%;
@@ -227,7 +204,7 @@ export default {
   position: absolute;
   -ms-transform: translate(-10%, -10%);
   transform: translate(-15px, -5%);
-}
+} */
 
 div.image-box div.delete {
   top: 35px;
@@ -243,6 +220,15 @@ div.image-box div.delete {
   border-radius: 0.25em;
   background: whitesmoke;
 }
+
+.cardtext {
+  padding: 2em;
+}
+
+.time-place {
+  font-weight: 700;
+}
+
 .btn-row {
   max-width: 80vw;
 }

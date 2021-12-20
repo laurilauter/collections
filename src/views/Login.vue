@@ -67,7 +67,8 @@ export default defineComponent({
       if (data.token) {
         localStorage.setItem("token", data.token);
       }
-      router.push("/");
+      //router.push("/");
+      router.back();
     }
     return {
       email,

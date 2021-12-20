@@ -36,11 +36,62 @@
 </template>
 
 <script>
+import { ref, onMounted } from "vue";
+//import { useRouter } from "vue-router";
+import axios from "axios";
 export default {
   props: {
-    token: String,
   },
+  setup() {
+    //const route = useRoute();
+    //const router = useRouter();
+    const token = ref(localStorage.getItem("token"));
+    console.log('token from nav1: ', token)
+
+
+
+    //Just checking the token with a POST request
+    async function checkToken() {
+      const result = await axios.get("/api/check-token", {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+        .catch(function (error) {
+          if (error.response.status === 401) {
+            localStorage.removeItem("token");
+            //router.push("/");
+          }
+        });
+      console.log("Token status:", result);
+    }
+
+    const logout = () => {
+      //localStorage.clear();
+      localStorage.removeItem("token");
+      console.log("token removed");
+      checkToken();
+      location.reload();
+      //router.push('/login'); //NOT WORKING
+    };
+
+
+
+    onMounted(() => {
+      checkToken();
+    });
+
+    return {
+      token,
+      checkToken,
+      logout,
+    };
+  }
 };
 </script>
 
-<style></style>
+<style>
+.nav-link {
+  cursor: pointer;
+}
+</style>

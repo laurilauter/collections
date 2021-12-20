@@ -22,43 +22,27 @@
 
           <div class="input-group">
             <input
-              v-model="newUrl"
+              v-model="newImageUrl"
               type="url"
               class="form-control"
               placeholder="Image URL"
               required
             />
-            <button
-              @click="addImage(newUrl)"
-              class="plus-box btn btn-outline-secondary btn-height"
-              type="button"
-              :disabled="newUrl.length == 0"
-            >
-              <i class="plus fs-2 bi bi-plus text-dark"></i>
-            </button>
           </div>
 
           <div class="container">
             <div id="thumb-row" class="row d-flex flex-wrap">
               <div
                 class="image-box col-6 col-md-4 col-lg-3 justify-content-center"
-                v-for="(image, index) in newImageUrlSet"
-                :key="image"
               >
                 <img
                   class="tiny-image img-thumbnail"
                   width="100"
                   height="100"
-                  :src="image"
-                  alt="this image is missing"
+                  :src="newImageUrl"
+                  v-if="newImageUrl"
+                  alt="no image"
                 />
-                <div
-                  @click="deleteThumbnail(index)"
-                  class="delete"
-                  type="button"
-                >
-                  <i class="fs-2 bi bi-trash"></i>
-                </div>
               </div>
             </div>
           </div>
@@ -69,7 +53,7 @@
             id="description"
             name="description"
             placeholder="Description goes here"
-            style="height: 10em"
+            style="height: 8em"
           ></textarea>
 
           <input
@@ -89,9 +73,17 @@
           />
 
           <input
-            v-model="newTime"
-            type="datetime-local"
-            name="time"
+            v-model="newDay"
+            type="date"
+            name="new-day"
+            placeholder="Date here"
+            class="form-control"
+          />
+
+          <input
+            v-model="newHour"
+            type="time"
+            name="new-hour"
             placeholder="Time here"
             class="form-control"
           />
@@ -120,47 +112,30 @@ export default {
   },
 
   setup(props, context) {
-    const newUrl = ref("");
     const newTitle = ref("");
-    const newImageUrlSet = ref([]);
+    const newImageUrl = ref("");
     const newDescription = ref("");
     const newLink = ref("");
     const newLocation = ref("");
-    const newTime = ref("");
+    //datetime stuff
+    const newDay = ref("");
+    const newHour = ref("");
 
-    //build image array
-    function addImage(input) {
-      console.log("trying to insert: ", input);
-      if (input) {
-        this.newImageUrlSet.push(input);
-        this.newUrl = "";
-        console.log("newImageUrlSet: ", this.newImageUrlSet);
-      } else {
-        console.log("Image URL not inserted");
-      }
-    }
-
-    function deleteThumbnail(input) {
-      console.log("this.newImageUrlSet before delete: ", this.newImageUrlSet);
-      this.newImageUrlSet = this.newImageUrlSet.filter((image, index) => {
-        if (index !== input) {
-          return image;
-        }
-      });
-    }
+    
 
     async function addNewEvent() {
       let data = {
-        title: this.newTitle,
-        imageUrlSet: this.newImageUrlSet,
-        description: this.newDescription,
-        link: this.newLink,
-        location: this.newLocation,
-        eventTime: this.newTime,
+        title: newTitle.value,
+        imageUrl: newImageUrl.value,
+        description: newDescription.value,
+        link: newLink.value,
+        location: newLocation.value,
+        eventTime: newDay.value + "T" + newHour.value,
         author: {
           userId: 1,
-          userName: 'Cody' 
-        }
+          userName: "Cody",
+        },
+        active: true,
       };
       console.log("Data from modal: ", data);
       await axios
@@ -182,16 +157,15 @@ export default {
       context.emit("clicked");
     }
 
+
     return {
-      newUrl,
+      newDay,
+      newHour,
       newTitle,
-      newImageUrlSet,
+      newImageUrl,
       newDescription,
       newLink,
       newLocation,
-      newTime,
-      addImage,
-      deleteThumbnail,
       addNewEvent,
       closeModal,
     };
@@ -223,6 +197,7 @@ export default {
   background: hotpink;
   border: none;
   position: relative;
+  border-radius: 0.25em;
 }
 
 .btn-square i {

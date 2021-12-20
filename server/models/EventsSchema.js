@@ -5,12 +5,13 @@ const Schema = mongoose.Schema;
 const EventsSchema = new Schema(
   {
     title: { type: String, required: true },
-    imageUrlSet: [{ type: String }],
+    imageUrl: { type: String },
     description: { type: String },
     link: { type: String },
     location: { type: String },
     eventTime: { type: Date, default: Date.now },
     author: [{ userId: Number, userName: String }],
+    active: { type: Boolean },
   },
   { timestamps: true }
 );
