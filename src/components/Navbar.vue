@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light container-fluid">
-    <a class="navbar-brand" href="#">Events</a>
+    <a class="navbar-brand-link nav-link" @click="$router.push('/')">Events</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -40,19 +40,17 @@ import { ref, onMounted } from "vue";
 //import { useRouter } from "vue-router";
 import axios from "axios";
 export default {
-  props: {
-  },
+  props: {},
   setup() {
     //const route = useRoute();
     //const router = useRouter();
     const token = ref(localStorage.getItem("token"));
-    console.log('token from nav1: ', token)
-
-
+    console.log("token from nav1: ", token);
 
     //Just checking the token with a POST request
     async function checkToken() {
-      const result = await axios.get("/api/check-token", {
+      const result = await axios
+        .get("/api/check-token", {
           headers: {
             Authorization: localStorage.getItem("token"),
           },
@@ -75,8 +73,6 @@ export default {
       //router.push('/login'); //NOT WORKING
     };
 
-
-
     onMounted(() => {
       checkToken();
     });
@@ -86,12 +82,18 @@ export default {
       checkToken,
       logout,
     };
-  }
+  },
 };
 </script>
 
 <style>
 .nav-link {
   cursor: pointer;
+  font-size: 1.2em;
+}
+
+.navbar-brand-link {
+  font-size: 2.2em;
+  color: hotpink;
 }
 </style>

@@ -223,7 +223,7 @@ export default {
   height: 50px;
   width: fit-content;
   margin-top: auto;
-  background: linear-gradient(to right, #16c0b0, #84cf6a);
+  background: hotpink;
   border: none;
   border-radius: 0.5em;
   font-weight: 600;
@@ -239,12 +239,10 @@ button {
   margin-bottom: 0em;
 }
 
-.btn-height {
-  margin-top: 8px;
-  height: 38px;
-  border: 0px;
-  background: linear-gradient(to right, #16c0b0, #84cf6a);
+.bi-x {
+  cursor: pointer;
 }
+
 
 .tiny-image {
   width: 100px;
@@ -253,36 +251,4 @@ button {
   margin: 10px 5px;
 }
 
-.plus-box {
-  position: relative;
-  width: 2.5em;
-}
-
-.plus {
-  margin: 0;
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
-
-.image-box {
-  position: relative;
-}
-
-div.image-box:hover img {
-  opacity: 0.3;
-}
-div.image-box:hover div {
-  position: absolute;
-  display: block;
-}
-div.image-box div {
-  display: none;
-}
-div.image-box div.delete {
-  top: 35px;
-  right: 35px;
-}
 </style>

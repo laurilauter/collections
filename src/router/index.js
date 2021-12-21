@@ -1,4 +1,3 @@
-
 import { createRouter, createWebHistory } from "vue-router";
 import Events from "@/components/Events.vue";
 import AddEvent from "@/components/AddEvent.vue";
@@ -94,20 +93,5 @@ router.beforeEach((to, from, next) => {
   else next();
   console.log("Login logic passed");
 });
-
-//this gives a warning of double next() in some cases
-/* router.beforeEach((to, from, next) => {
-  if (to.meta.auth) {
-    if (localStorage.getItem("token")) {
-      next();
-    } else {
-      console.log('Login needed')
-      next({ name: "Login" });
-    }
-  } else {
-    next();
-  }
-  console.log("Token check block");
-}); */
 
 export default router;

@@ -183,29 +183,6 @@ export default {
 </script>
 
 <style scoped>
-/* .card-image-box .btnPrev {
-  position: absolute;
-  top: 45%;
-  left: 0%;
-  cursor: pointer;
-}
-.card-image-box .btnNext {
-  position: absolute;
-  top: 45%;
-  right: 0%;
-  cursor: pointer;
-}
-.card-image-box .btnNext i {
-  position: absolute;
-  -ms-transform: translate(-10%, -10%);
-  transform: translate(-15px, -5%);
-}
-.card-image-box .btnPrev i {
-  position: absolute;
-  -ms-transform: translate(-10%, -10%);
-  transform: translate(-15px, -5%);
-} */
-
 div.image-box div.delete {
   top: 35px;
   right: 35px;

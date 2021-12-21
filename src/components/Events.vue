@@ -6,9 +6,8 @@
         class="row d-flex justify-content-between align-items-center header-row"
       >
         <div
-          class="col-sm-12 col col-md-12 col-lg-3 float-left d-flex justify-content-start"
-        >
-        </div>
+          class="col-none col-lg-3 float-left d-flex justify-content-start"
+        ></div>
         <div
           class="col col-xs-12 col-sm-12 col-md-12 col-lg-6 p-5 d-flex justify-content-center"
         >
@@ -145,7 +144,6 @@ export default {
     }
     //call the above func
     //getEvents();
-    
 
     //open modal
     function openModal() {
@@ -157,7 +155,6 @@ export default {
       await getEvents();
     }
 
-    
     onMounted(() => {
       getEvents();
     });
