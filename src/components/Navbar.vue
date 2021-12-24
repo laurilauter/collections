@@ -38,10 +38,13 @@
 <script>
 import { ref, onMounted } from "vue";
 //import { useRouter } from "vue-router";
+import { defineComponent } from "vue";
 import axios from "axios";
-export default {
+export default defineComponent({
+  name: "Navbar",
+  emits: ["refresh"],
   props: {},
-  setup() {
+  setup(props, context) {
     //const route = useRoute();
     //const router = useRouter();
     const token = ref(localStorage.getItem("token"));
@@ -68,10 +71,17 @@ export default {
       //localStorage.clear();
       localStorage.removeItem("token");
       console.log("token removed");
-      checkToken();
-      location.reload();
+      //checkToken();
+      context.emit("refresh");
+
+      //location.reload();
       //router.push('/login'); //NOT WORKING
     };
+
+    /*   const refresh = () => {
+      console.log("trying");
+      this.$emit("enlargeText", "someValue");
+    } */
 
     onMounted(() => {
       checkToken();
@@ -83,7 +93,7 @@ export default {
       logout,
     };
   },
-};
+});
 </script>
 
 <style>

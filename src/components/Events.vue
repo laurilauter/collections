@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <Navbar />
+    <Navbar @refresh="relaodNav" :key="navKey" />
     <header class="container-fluid banner">
       <div
         class="row d-flex justify-content-between align-items-center header-row"
@@ -104,6 +104,7 @@ export default {
     const newDescription = ref("");
     let showModal = ref(false);
     const token = ref(localStorage.getItem("token"));
+    let navKey = ref(0);
 
     //Make description shorter
     const excerpt = (input) => {
@@ -155,11 +156,18 @@ export default {
       await getEvents();
     }
 
+    function relaodNav() {
+      navKey.value += 1;
+      console.log("navKey NAV", navKey.value);
+    }
+
     onMounted(() => {
       getEvents();
     });
 
     return {
+      navKey,
+      relaodNav,
       getDate,
       getTime,
       excerpt,

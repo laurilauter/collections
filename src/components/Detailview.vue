@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <Navbar />
+    <Navbar @refresh="relaodNav" :key="navKey" />
     <div class="container-fluid body-section py-3">
       <div class="row ms-0 mx-3 justify-content-between">
         <div class="col-12 col-lg-6 d-flex justify-content-start">
@@ -111,6 +111,8 @@ export default {
     const showModal = ref(false);
     const id = route.params.id;
     const token = ref(localStorage.getItem("token"));
+    //nav refresh
+    let navKey = ref(0);
 
     //convert dates
     const getDate = (dateString) => {
@@ -163,10 +165,18 @@ export default {
       showModal.value = false;
       await getEvent(id);
     }
+
+    function relaodNav() {
+      navKey.value += 1;
+      console.log("navKey NAV", navKey.value);
+    }
+
     onMounted(() => {
       getEvent(route.params.id);
     });
     return {
+      navKey,
+      relaodNav,
       getDate,
       getTime,
       deleteEvent,
