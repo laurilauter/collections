@@ -21,13 +21,14 @@ axios.interceptors.response.use(
   (response) => {
     // Any status code from range of 2xx
     // Do something with response data
-    console.log("Status code in 200 range");
+    console.log("Interceptor: Status code in 200 range");
     return response;
   },
   (error) => {
     // Any status codes outside range of 2xx
     // Do something with response error
-    console.log("Status code outside 200 range");
+    //router.push("/login");
+    console.log("Interceptor: Status code outside 200 range");
     return Promise.reject(error);
   }
 );

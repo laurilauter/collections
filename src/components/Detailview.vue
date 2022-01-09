@@ -47,7 +47,12 @@
             class="col-12 col-lg-7 col-md-12 col-sm-12 margin-fix card-image-box-outer"
           >
             <div class="card-image-box">
-              <img :src="eventInfo.imageUrl" alt="event image" />
+              <img
+                :src="eventInfo.imageUrl"
+                loading="lazy"
+                alt="..."
+                onerror="../../public/image-loader.gif"
+              />
             </div>
           </div>
           <div
@@ -73,6 +78,48 @@
             </div>
           </div>
         </div>
+
+        <div
+          class="row comments image-text-box justify-content-center p-5 mb-5"
+        >
+          <h2>Get Engaged</h2>
+          <div>
+            <div class="input-group mb-3" v-if="token">
+              <input
+                v-model="newComment"
+                @keyup.enter="commentEvent"
+                type="text"
+                class="form-control"
+                placeholder="Comment..."
+                aria-label="Comment..."
+                aria-describedby="Comment..."
+              />
+              <div class="input-group-append">
+                <button
+                  @click="commentEvent"
+                  class="btn btn-outline-secondary"
+                  type="submit"
+                >
+                  Post
+                </button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <!-- v-for="comment in eventInfo.comments.slice().reverse()" -->
+            <ul class="comment-list">
+              <li
+                v-for="comment in eventInfo.comments"
+                :key="comment.commentBody"
+              >
+                <div class="comment">
+                  <h6>{{ comment.userName }}</h6>
+                  <p>{{ comment.commentBody }}</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
     <Footer />
@@ -96,10 +143,10 @@ export default {
     Navbar,
   },
   props: {
-    id: Number,
+    /* id: Number,
     title: String,
     imageUrl: String,
-    description: String,
+    description: String, */
   },
   setup() {
     const route = useRoute();
@@ -107,12 +154,13 @@ export default {
     const eventInfo = ref([]);
     const currentNumber = ref(0);
     const images = ref([]);
-    //const imagesLenght = computed(() => images.value.length);
     const showModal = ref(false);
     const id = route.params.id;
     const token = ref(localStorage.getItem("token"));
     //nav refresh
     let navKey = ref(0);
+    //comments
+    const newComment = ref("");
 
     //convert dates
     const getDate = (dateString) => {
@@ -136,6 +184,35 @@ export default {
       });
       console.log("FE getEvent is called");
       eventInfo.value = result.data;
+      eventInfo.value.comments = eventInfo.value.comments.slice().reverse();
+      //console.log("comments: ", eventInfo.value.comments);
+    }
+
+    //Comment event
+    async function commentEvent() {
+      let id = route.params.id;
+      let data = {
+        comment: {
+          userId: 1,
+          userName: "Cody",
+          commentBody: newComment.value,
+        },
+      };
+      console.log("Data from modal: ", data);
+      await axios
+        .post(`/api/edit-event/${id}`, data, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          newComment.value = "";
+          getEvent(route.params.id);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
 
     //Delete event
@@ -175,6 +252,8 @@ export default {
       getEvent(route.params.id);
     });
     return {
+      commentEvent,
+      newComment,
       navKey,
       relaodNav,
       getDate,
@@ -206,6 +285,24 @@ div.image-box div.delete {
   box-shadow: 3px 5px 5px darkgray;
   border-radius: 0.25em;
   background: whitesmoke;
+}
+
+.comments {
+  min-width: 80vw;
+}
+
+.comment-list {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.comment {
+  margin: 0.2em;
+  padding: 0.5em;
+  background: #e6e6e6;
+  border: none;
+  border-radius: 0.25em;
 }
 
 .cardtext {
@@ -281,5 +378,11 @@ h4 {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+}
+
+@media screen and (max-width: 992px) {
+  body {
+    background-color: blue;
+  }
 }
 </style>

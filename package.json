@@ -16,6 +16,7 @@
     "jsonwebtoken": "^8.5.1",
     "mdbvue": "^6.7.3",
     "vue": "^3.0.0",
+    "vue-load-image": "^1.1.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.2"
   },

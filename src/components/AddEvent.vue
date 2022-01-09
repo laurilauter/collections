@@ -117,11 +117,10 @@ export default {
     const newDescription = ref("");
     const newLink = ref("");
     const newLocation = ref("");
+    const newAuthor = { userId: 1, userName: "Cody" };
     //datetime stuff
     const newDay = ref("");
     const newHour = ref("");
-
-    
 
     async function addNewEvent() {
       let data = {
@@ -131,10 +130,8 @@ export default {
         link: newLink.value,
         location: newLocation.value,
         eventTime: newDay.value + "T" + newHour.value,
-        author: {
-          userId: 1,
-          userName: "Cody",
-        },
+        comments: [],
+        author: newAuthor,
         active: true,
       };
       console.log("Data from modal: ", data);
@@ -156,7 +153,6 @@ export default {
     function closeModal() {
       context.emit("clicked");
     }
-
 
     return {
       newDay,
@@ -226,6 +222,4 @@ button {
   object-fit: cover;
   margin: 10px 5px;
 }
-
-
 </style>

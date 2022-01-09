@@ -28,7 +28,7 @@ router.post("/login", async function (request, response) {
       );
       if (isPasswordValid) {
         const token = jwt.sign({ email: user.email }, SECRET, {
-          expiresIn: "1h",
+          expiresIn: "10000",
         });
         response.send({ token: "Bearer " + token });
       } else {

@@ -27,6 +27,7 @@ router.post("/add-event", async function (request, response) {
   response.send("Addition sucessful");
 });
 
+//Edit event
 router.patch("/edit-event/:id", async function (request, response) {
   console.log("BE edit started");
   await Events.updateOne(
@@ -48,6 +49,22 @@ router.patch("/edit-event/:id", async function (request, response) {
   response.send("Edit successful");
 });
 
+//Add comment
+router.post("/edit-event/:id", async function (request, response) {
+  console.log("BE comment started");
+  console.log("comment", request.body.comment);
+  await Events.updateOne(
+    { _id: request.params.id },
+    {
+      $push: {
+        comments: request.body.comment,
+      },
+    }
+  );
+  console.log("BE comment ended");
+  response.send("comment successful");
+});
+
 //Delete event
 router.delete("/delete-event/:id", async function (request, response) {
   console.log("request.params.id ", request.params.id);
@@ -60,7 +77,7 @@ router.delete("/delete-event/:id", async function (request, response) {
 router.get("/check-token", function (request, response) {
   const result = "Checking the token";
   console.log("result of token check: ", result);
-  response.send("Checked the token");
+  response.send(result);
 });
 
 module.exports = router;

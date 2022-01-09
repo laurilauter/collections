@@ -10,12 +10,19 @@ const EventsSchema = new Schema(
     link: { type: String },
     location: { type: String },
     eventTime: { type: Date, default: Date.now },
+    comments: [
+      {
+        userId: Number,
+        userName: String,
+        commentBody: String,
+      },
+      { timestamps: true },
+    ], //comments inside this array
     author: [{ userId: Number, userName: String }],
     active: { type: Boolean },
   },
   { timestamps: true }
 );
-
 
 const Events = mongoose.model("Events", EventsSchema);
 

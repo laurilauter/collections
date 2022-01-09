@@ -40,6 +40,8 @@ import { ref, onMounted } from "vue";
 //import { useRouter } from "vue-router";
 import { defineComponent } from "vue";
 import axios from "axios";
+//import { response } from "express";
+//import func from "../../vue-temp/vue-editor-bridge";
 export default defineComponent({
   name: "Navbar",
   emits: ["refresh"],
@@ -50,7 +52,7 @@ export default defineComponent({
     const token = ref(localStorage.getItem("token"));
     console.log("token from nav1: ", token);
 
-    //Just checking the token with a POST request
+    //Checking the token with a POST request
     async function checkToken() {
       const result = await axios
         .get("/api/check-token", {
@@ -60,28 +62,18 @@ export default defineComponent({
         })
         .catch(function (error) {
           if (error.response.status === 401) {
-            localStorage.removeItem("token");
-            //router.push("/");
+            console.log("Token is BAD");
           }
         });
-      console.log("Token status:", result);
+      console.log("FE is checking the token ", result);
     }
 
     const logout = () => {
-      //localStorage.clear();
       localStorage.removeItem("token");
       console.log("token removed");
-      //checkToken();
       context.emit("refresh");
-
-      //location.reload();
-      //router.push('/login'); //NOT WORKING
+      //checkToken();
     };
-
-    /*   const refresh = () => {
-      console.log("trying");
-      this.$emit("enlargeText", "someValue");
-    } */
 
     onMounted(() => {
       checkToken();
@@ -89,6 +81,7 @@ export default defineComponent({
 
     return {
       token,
+      //longpollToken,
       checkToken,
       logout,
     };

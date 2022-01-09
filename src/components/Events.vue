@@ -18,7 +18,8 @@
           <div
             class="btn-square m-1 mt-1 mb-3 d-inline-flex align-items-center"
             @click="openModal"
-            v-if="!showModal && token"
+            v-if="!showModal && token && !hide"
+            :key="navKey"
           >
             <i class="plus fs-2 bi bi-plus text-dark"></i>
           </div>
@@ -49,7 +50,8 @@
                 <img
                   class="mx-auto d-block"
                   :src="event.imageUrl"
-                  alt="event image"
+                  loading="lazy"
+                  alt="..."
                 />
               </div>
               <div class="card-text-box p-3">
@@ -90,9 +92,9 @@ export default {
     Navbar,
   },
   props: {
-    title: String,
+    /* title: String,
     imageUrl: String,
-    description: String,
+    description: String, */
   },
 
   setup() {
@@ -105,6 +107,7 @@ export default {
     let showModal = ref(false);
     const token = ref(localStorage.getItem("token"));
     let navKey = ref(0);
+    const hide = ref();
 
     //Make description shorter
     const excerpt = (input) => {
@@ -143,8 +146,6 @@ export default {
       eventsFromServer.value = result.data;
       console.log("eventsFromServer ", eventsFromServer.value);
     }
-    //call the above func
-    //getEvents();
 
     //open modal
     function openModal() {
@@ -158,6 +159,7 @@ export default {
 
     function relaodNav() {
       navKey.value += 1;
+      hide.value = true;
       console.log("navKey NAV", navKey.value);
     }
 
@@ -166,6 +168,7 @@ export default {
     });
 
     return {
+      hide,
       navKey,
       relaodNav,
       getDate,
