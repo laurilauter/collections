@@ -1,13 +1,11 @@
 const mongoose = require("mongoose");
 const { Events } = require("./models/EventsSchema.js");
 const { Users } = require("./models/UsersSchema.js");
+const dotenv = require("dotenv");
 
+dotenv.config();
 // Connecting to database
-mongoose.connect(
-  "mongodb+srv://mulgikapsas:mulgikapsas@cluster0.1ltzv.mongodb.net/eventsapp?retryWrites=true&w=majority",
-  { useNewUrlParser: true }
-);
-
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
 
 module.exports = {
   Events,
