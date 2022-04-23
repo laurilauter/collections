@@ -104,7 +104,7 @@
 <script>
 import { ref } from "vue";
 import axios from "axios";
-import { useRoute, /* useRouter */ } from "vue-router";
+import { useRoute /* useRouter */ } from "vue-router";
 export default {
   name: "AddEvent",
   props: {
@@ -181,7 +181,6 @@ export default {
       context.emit("clicked");
     }
 
-
     return {
       newLink,
       newLocation,
@@ -243,12 +242,10 @@ button {
   cursor: pointer;
 }
 
-
 .tiny-image {
   width: 100px;
   height: 100px;
   object-fit: cover;
   margin: 10px 5px;
 }
-
 </style>

@@ -22,12 +22,10 @@ app.use(
       "/api/auth/register",
       "/api/auth/login",
       "/api/get-events",
-      { url: /^\/api\/get-event\/.*/, methods: ['GET'] }, // removed PUT
+      { url: /^\/api\/get-event\/.*/, methods: ["GET"] }, // removed PUT
     ],
   })
 );
-
-
 
 //BASIC SOLUTION
 //for API routes

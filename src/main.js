@@ -3,18 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import axios from "axios";
-
-//Intercepting the request
-axios.interceptors.request.use(
-  (config) => {
-    // Do something before request is sent
-    return config;
-  },
-  (error) => {
-    // Do something with request error
-    return Promise.reject(error);
-  }
-);
+import { Promise } from "es6-promise";
 
 //Intercepting the response
 axios.interceptors.response.use(

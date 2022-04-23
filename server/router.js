@@ -78,6 +78,7 @@ router.get("/check-token", function (request, response) {
   const result = "Checking the token";
   console.log("result of token check: ", result);
   response.send(result);
+  //response.status(200).json({ message: result });
 });
 
 module.exports = router;

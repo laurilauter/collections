@@ -8,7 +8,7 @@
         <div class="card p-3">
           <h3>Login</h3>
           <!-- HINT -->
-          <br>
+          <br />
           <p>example@test.ee</p>
           <p>example</p>
           <!-- HINT -->
@@ -59,6 +59,7 @@ export default defineComponent({
   setup() {
     let email = ref("");
     let password = ref("");
+
     async function login() {
       const { data } = await axios.post("/api/auth/login", {
         email: email.value,
@@ -67,8 +68,7 @@ export default defineComponent({
       if (data.token) {
         localStorage.setItem("token", data.token);
       }
-      //router.push("/");
-      router.back();
+      router.push("/");
     }
     return {
       email,
