@@ -18,6 +18,19 @@ axios.interceptors.response.use(
     // Do something with response error
     //router.push("/login");
     console.log("Interceptor: Status code outside 200 range");
+    //return Promise.reject(error);
+
+    if (error.response) {
+      if (error.response.status === 401) {
+        // Do something, call refreshToken() request for example;
+        // return a request
+        console.log("Status 401: Session expired, please login again.");
+        return router.push("/login");
+        //return axios_instance(config);
+      } else {
+        return error;
+      }
+    }
     return Promise.reject(error);
   }
 );

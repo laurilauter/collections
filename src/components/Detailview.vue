@@ -272,6 +272,10 @@ export default {
 </script>
 
 <style scoped>
+/* div {
+  border: 1px solid red;
+} */
+
 div.image-box div.delete {
   top: 35px;
   right: 35px;
@@ -289,6 +293,7 @@ div.image-box div.delete {
 
 .comments {
   min-width: 80vw;
+  max-width: 60vw;
 }
 
 .comment-list {

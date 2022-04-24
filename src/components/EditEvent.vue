@@ -121,6 +121,7 @@ export default {
     const newLink = ref("");
     const newLocation = ref("");
     //datetime stuff
+    const newEventTime = ref("");
     const newDay = ref("");
     const newHour = ref("");
 
@@ -140,6 +141,23 @@ export default {
       newDescription.value = eventInfo.value.description;
       newLink.value = eventInfo.value.link;
       newLocation.value = eventInfo.value.location;
+      const date = new Date(eventInfo.value.eventTime);
+
+      const d = date.getDate();
+      const m = date.getMonth() + 1;
+      const y = date.getFullYear();
+      const dateString =
+        y + "-" + (m <= 9 ? "0" + m : m) + "-" + (d <= 9 ? "0" + d : d);
+
+      const minutes = date.getMinutes();
+      const hours = date.getHours();
+      const timeString = hours + ":" + minutes;
+      // console.log("result date ", dateString);
+      // console.log("result time ", timeString);
+
+      newDay.value = dateString;
+      newHour.value = timeString;
+      newEventTime.value = eventInfo.value.eventTime;
     }
     // call the above function
     getEvent(route.params.id);
@@ -190,6 +208,7 @@ export default {
       newImageUrl,
       newTitle,
       newDescription,
+      newEventTime,
       editEvent,
       closeModal,
     };
