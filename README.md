@@ -1,5 +1,7 @@
 # events
 
+A web application for keeping track of events.
+
 ## Project setup
 ```
 npm install
